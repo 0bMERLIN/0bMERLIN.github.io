@@ -20,8 +20,8 @@ let Bobbing = false
 
 let MapNumber = 7
 
-let ColorMapURL = `${window.location.href}/Assets/C${MapNumber}.png`
-let GameMapURL = `${window.location.href}/Assets/D${MapNumber}.png`
+let ColorMapURL = `${window.location.href}Assets/C${MapNumber}.png`
+let GameMapURL = `${window.location.href}Assets/D${MapNumber}.png`
 
 let GameMapImg
 let ColorMapImg
