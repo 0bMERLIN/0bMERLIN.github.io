@@ -1,6 +1,6 @@
 function DrawVerticalLine(x, startingY, bottomY, color) {
   // draw
-  for (let y = startingY; y < bottomY; y++)
+  for (let y = startingY > 0 ? startingY : 0; y < bottomY; y++)
     set(x, y, color)
 }
 

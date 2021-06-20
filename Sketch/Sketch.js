@@ -1,5 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-let ScreenWidth = 200 // 300px for maximum retro look!
+
+// Global state
+let ScreenWidth = 200 // 200px for maximum retro look!
 let GameMap = []
 let ColorMap = []
 let Player = { x: 50, y: 50, rotation: 0 }
@@ -17,15 +19,11 @@ let ShowDebug = false
 let PlayerSpeed = .4
 let Distance = 100
 let Bobbing = false
-
 let MapNumber = 7
-
 let ColorMapURL = `${window.location.href}Assets/C${MapNumber}.png`
 let GameMapURL = `${window.location.href}Assets/D${MapNumber}.png`
-
 let GameMapImg
 let ColorMapImg
-
 let LastTimeGrounded = 0
 
 
@@ -35,7 +33,6 @@ const SPACE = 32
 
 
 function preload() {
-
 
   // load the maps as images
   ColorMapImg = loadImage(ColorMapURL)
