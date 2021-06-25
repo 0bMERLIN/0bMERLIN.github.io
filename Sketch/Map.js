@@ -105,15 +105,37 @@ function ImageTo2DArray(img) {
 }
 
 
+
+function Array2DToImage(arr) {
+
+  let img = createImage(arr[0].length, arr.length)
+  img.loadPixels()
+
+  for (let y = 0; y < img.height; y++) {
+    for (let x = 0; x < img.width; x++) {
+      img.set(x, y, arr[y][x])
+    }
+  }
+
+  img.updatePixels()
+
+  return img
+}
+
+
 function Map2DArray(f, arr) {
 
   let acc = []
+  let lIdx = 0
   for (l of arr) {
     let line = []
+    let idx = 0
     for (x of l) {
-      line.push(f(x))
+      line.push(f(x, lIdx, idx))
+      idx++
     }
     acc.push(line)
+    lIdx++
   }
   return acc
 }

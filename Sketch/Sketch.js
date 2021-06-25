@@ -19,12 +19,15 @@ let ShowDebug = false
 let PlayerSpeed = .4
 let Distance = 100
 let Bobbing = false
-let MapNumber = 7
+let MapNumber = 1
 let ColorMapURL = `${window.location.href}Assets/C${MapNumber}.png`
 let GameMapURL = `${window.location.href}Assets/D${MapNumber}.png`
 let GameMapImg
 let ColorMapImg
 let LastTimeGrounded = 0
+
+// Fonts
+let Font
 
 
 // key codes
@@ -40,6 +43,9 @@ function preload() {
 
   GameMapImg = loadImage(GameMapURL)
   GameMapImg.loadPixels()
+
+  // load fonts
+  Font = loadFont("Fonts/FiraMono-Medium.otf")
 }
 
 
@@ -62,6 +68,9 @@ function setup() {
   ColorMap = ImageTo2DArray(ColorMapImg)
   GameMap = Map2DArray(ToGrayscale, ImageTo2DArray(GameMapImg))
 
+  
+  // initialize fonts
+  textFont(Font)
 }
 
 
@@ -135,7 +144,7 @@ function HandleKeys(player, playerSpeed) {
 
 function draw() {
 
-
+  background(0)
   
   let scaleHeight = ScreenWidth/(1/TerrainScale)
   let horizon = Horizon
@@ -169,43 +178,45 @@ function draw() {
   
   HandleKeys(Player, PlayerSpeed)
   
-  // fill screen with sky color
-  // doesn't kill as much performance, as i would expect.
-  // possible optimisation:
-  //  fill only what is left after rendering the y buffer
-  //  (would have to be done in Render.js)
-  for (let i = 0; i < ScreenWidth * ScreenWidth * 20 /* magic value for some reason ¯\_(ツ)_/¯ */; i += 4) {
 
-    pixels[i] = SkyColor[0]
-    pixels[i+1] = SkyColor[1]
-    pixels[i+2] = SkyColor[2]
-    pixels[i+3] = 255
-  }
+  // Render environment
+  let [depthBuffer, colorBuffer] = Render(
+    Player,
+    scaleHeight,
+    horizon,
+    distance,
+    screenWidth,
+    screenHeight,
+    height,
+    GameMap,
+    ColorMap,
+    SkyColor,
+    LODFalloff = 1.03,
+    initialLOD = 0.02,
+    applyFog = false
+  )
 
-  updatePixels()
+  image(colorBuffer, 0, 0)
 
 
-  Render(Player, scaleHeight, horizon, distance, screenWidth, screenHeight, height, GameMap, ColorMap, SkyColor, LODFalloff = 1.03, initialLOD = 0.02, applyFog = false)
+  ////////////////////////////////
   
-
-  if (DoDrawMinimap)
-    DrawMinimap(ScreenWidth - MinimapDrawDist, 0, Player.x, Player.y, Player.rotation, MinimapDrawDist, ColorMap)
-
-  updatePixels()
-
+  // render debug info
   if (ShowDebug) {
-    textSize(8)
+
+    textSize(5)
     stroke(255,0,0)
     fill(255, 0, 0)
     
     text(
-
+      
       'FPS: ' + Math.trunc(frameRate()) + '\n' +
       'altitude (ground): ' + int(altitudeGround) + '\n' +
       'ground level: ' + int(terrainHeight) + '\n' +
       'Grounded: ' + Grounded,
-
+      
       2, 8
     )
   }
+
 }
