@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Global state
-let ScreenWidth = 200 // 200px for maximum retro look!
+let ScreenWidth = 128 // 200px for maximum retro look!
 let GameMap = []
 let ColorMap = []
 let Player = { x: 50, y: 50, rotation: 0 }
@@ -17,14 +17,16 @@ let SnowHeight = 130
 let SkyColor = [20, 100, 255]
 let ShowDebug = false
 let PlayerSpeed = .4
-let Distance = 100
+let Distance = 90
 let Bobbing = false
-let MapNumber = 1
-let ColorMapURL = `${window.location.href}Assets/C${MapNumber}.png`
-let GameMapURL = `${window.location.href}Assets/D${MapNumber}.png`
 let GameMapImg
 let ColorMapImg
 let LastTimeGrounded = 0
+
+// Map config
+let MapNumber = 6
+let ColorMapURL = `${window.location.href}Assets/C${MapNumber}.png`
+let GameMapURL = `${window.location.href}Assets/D${MapNumber}.png`
 
 // Fonts
 let Font
@@ -144,7 +146,7 @@ function HandleKeys(player, playerSpeed) {
 
 function draw() {
 
-  background(0)
+  background(SkyColor)
   
   let scaleHeight = ScreenWidth/(1/TerrainScale)
   let horizon = Horizon
@@ -192,11 +194,12 @@ function draw() {
     ColorMap,
     SkyColor,
     LODFalloff = 1.03,
-    initialLOD = 0.02,
+    initialLOD = 0.01,
     applyFog = false
   )
 
   image(colorBuffer, 0, 0)
+  image(depthBuffer, 0, 0)
 
 
   ////////////////////////////////
@@ -204,19 +207,19 @@ function draw() {
   // render debug info
   if (ShowDebug) {
 
-    textSize(5)
+    textSize(10)
     stroke(255,0,0)
     fill(255, 0, 0)
     
     text(
-      
       'FPS: ' + Math.trunc(frameRate()) + '\n' +
       'altitude (ground): ' + int(altitudeGround) + '\n' +
       'ground level: ' + int(terrainHeight) + '\n' +
       'Grounded: ' + Grounded,
       
-      2, 8
+      2, 10
     )
   }
+
 
 }

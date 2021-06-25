@@ -95,10 +95,10 @@ function Render(
 
       let lineHeight = (height - currHeightMapVal) / z * scaleHeight + horizon
       let col = applyFog ? color(r, g, b) : rawColorValue
-      let depthColor = map(z, 1, distance, 0, 255)
+      let depthColor = map(z * 1.5, 1, distance, 0, 255)
 
       DrawVerticalLine(x, lineHeight, yBuffer[x], col, colorBuffer)
-      DrawVerticalLine(x, lineHeight, yBuffer[x], depthColor, depthBuffer)
+      DrawVerticalLine(x, lineHeight, yBuffer[x], color(depthColor, depthColor, depthColor, depthColor), depthBuffer)
 
       if (lineHeight < yBuffer[x])
         yBuffer[x] = lineHeight
